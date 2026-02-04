@@ -32,7 +32,7 @@
 </table>
 
 <script>
-const client = supabase.createClient(
+const client = window.supabase.createClient(
   "https://lurbxgmvbmlanmzwhkio.supabase.co",
   "sb_publishable_9P9VH5VPeyUhh2gCoqzgJg_7haX2lvi"
 );
@@ -42,4 +42,5 @@ async function load() {
     .from('responses')
     .select('*')
     .order('created_at', { ascending: fa_
+
 
