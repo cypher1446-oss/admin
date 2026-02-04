@@ -4,11 +4,13 @@
   <title>Opinion Insights Admin</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <style>
-    body { font-family: Arial; padding: 30px; background:#f4f6f8; }
-    .card { background:#fff; padding:20px; margin:10px; display:inline-block; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    body { font-family: Arial; padding: 20px; background:#f4f6f8; }
+    .card { background:#fff; padding:15px 25px; margin:10px; display:inline-block;
+            border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); font-size:18px;}
     table { border-collapse: collapse; width:100%; margin-top:20px; background:#fff;}
     th, td { border:1px solid #ddd; padding:8px; text-align:left;}
     th { background:#eee; }
+    #stats { margin-bottom:15px; }
   </style>
 </head>
 <body>
@@ -17,7 +19,7 @@
 
 <div id="stats"></div>
 
-<table id="dataTable">
+<table>
   <thead>
     <tr>
       <th>PID</th>
@@ -26,51 +28,17 @@
       <th>Time</th>
     </tr>
   </thead>
-  <tbody></tbody>
+  <tbody id="tbody"></tbody>
 </table>
 
 <script>
-const supabase = supabase.createClient(
+const client = supabase.createClient(
   "https://lurbxgmvbmlanmzwhkio.supabase.co",
   "sb_publishable_9P9VH5VPeyUhh2gCoqzgJg_7haX2lvi"
 );
 
-async function loadData() {
-  const { data } = await supabase
+async function load() {
+  const { data } = await client
     .from('responses')
     .select('*')
-    .order('created_at', { ascending: false });
-
-  let complete=0, terminate=0, quota=0, duplicate=0;
-
-  const tableBody = document.querySelector("#dataTable tbody");
-  tableBody.innerHTML = "";
-
-  data.forEach(row => {
-    if(row.status==="complete") complete++;
-    if(row.status==="terminate") terminate++;
-    if(row.status==="quota_full") quota++;
-    if(row.status==="duplicate") duplicate++;
-
-    tableBody.innerHTML += `
-      <tr>
-        <td>${row.pid}</td>
-        <td>${row.uid}</td>
-        <td>${row.status}</td>
-        <td>${new Date(row.created_at).toLocaleString()}</td>
-      </tr>`;
-  });
-
-  document.getElementById("stats").innerHTML = `
-    <div class="card">Complete: ${complete}</div>
-    <div class="card">Terminate: ${terminate}</div>
-    <div class="card">Quota Full: ${quota}</div>
-    <div class="card">Duplicate: ${duplicate}</div>
-  `;
-}
-
-loadData();
-</script>
-
-</body>
-</html>
+    .order('created_at', { ascending: fa_
